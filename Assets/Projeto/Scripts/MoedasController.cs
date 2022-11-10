@@ -35,7 +35,7 @@ public class MoedasController : MonoBehaviour
             _GameController.fxGame.PlayOneShot(_GameController.fxMoedaColetada);
             Destroy(this.gameObject);
             if(_GameController.PontosPlayer >= 20){
-                _CanvasController.GameOver();
+                _CanvasController.GameWin();
             }
         }
     }

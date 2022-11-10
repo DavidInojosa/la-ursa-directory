@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private Rigidbody2D rig;
     private bool die = false;
+    public GameObject btnJump;
+    public bool buttonPressed;
 
     [Tooltip("Check ground point, this must be under player feet ")]
     public Transform checkGround;
@@ -33,12 +36,14 @@ public class PlayerController : MonoBehaviour
     public LayerMask LayerGround;
 
     private GameManagerController _GameController;
+    private ButtonController _ButtonController;
 
     // Start is called before the first frame update
     void Start()
     {
 
         _GameController = FindObjectOfType(typeof(GameManagerController)) as GameManagerController;
+        _ButtonController = FindObjectOfType(typeof(ButtonController)) as ButtonController;
 
         rig = GetComponent<Rigidbody2D>();
         gravityNormal = rig.gravityScale;       
@@ -49,7 +54,16 @@ public class PlayerController : MonoBehaviour
         Application.targetFrameRate = 60;
 
         StartCoroutine("MovimentaPlayer");
+        // StartCoroutine("JumpPlayer");
     }
+
+    // public void JumpPlayer()
+    // {
+    //     Debug.Log("comecou mesmo");
+    //     Debug.Log(_ButtonController.buttonPressed);
+        
+    //     StartCoroutine("JumpPlayer");
+    // }
 
 
     IEnumerator MovimentaPlayer()
@@ -73,29 +87,15 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if(_ButtonController.buttonPressed)
         {
             Jump();
+
         }
-                   
-        if (Input.GetKeyUp(KeyCode.UpArrow))
-        {
+        else
+        {   
             JumpOff();
         }
-#else
-       
-        if (Input.GetButtonDown("Jump"))
-        {
-            Jump();
-        }
-
-        if (Input.GetButtonDown("Jump"))
-        {
-            JumpOff();
-        }
-
-#endif
 
         anim.SetFloat("Height", rig.velocity.y);
     }

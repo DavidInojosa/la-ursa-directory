@@ -31,9 +31,14 @@ public class GameManagerController : MonoBehaviour
     public GameObject   ObstaculoPrefab;
     public bool         ObstaculoGerado = false;
     public float        ObjetoVelocidade;
+  
+    [Header("Configuração do Inimigo")]
+    public float         EnemyTempo;
+    public GameObject   EnemyPrefab;
+    public float         EnemyVelocidade;
 
     [Header("Controles do Player")]
-    public int VidasPlayer = 3;
+    public int VidasPlayer = 4;
     public float MoedasTempo;
     public GameObject MoedasPrefab;
     
@@ -44,6 +49,8 @@ public class GameManagerController : MonoBehaviour
     public Text txtMetros;
     public Text txtPontosGameOver;
     public Text txtMetrosGameOver;
+    public Text txtPontosGameWin;
+    public Text txtMetrosGameWin;
     
 
     [Header("Controle de Distância")]
@@ -64,6 +71,7 @@ public class GameManagerController : MonoBehaviour
         StartCoroutine("SpawnNuvem");
         StartCoroutine("SpawnNuvem2");
         StartCoroutine("SpawnObstaculo");
+        StartCoroutine("SpawnEnemy");
         StartCoroutine("SpawnMoedas");
         StartCoroutine("MetrosPercorrido");
     }
@@ -83,6 +91,15 @@ public class GameManagerController : MonoBehaviour
 
     }
 
+    IEnumerator SpawnEnemy()
+    {
+        yield return new WaitForSeconds(EnemyTempo);
+
+        GameObject EnemySpawn = Instantiate(EnemyPrefab);
+        StartCoroutine("SpawnEnemy");
+
+    }
+
     IEnumerator SpawnNuvem()
     {        
         yield return new WaitForSeconds(NuvemTempo);
@@ -99,7 +116,7 @@ public class GameManagerController : MonoBehaviour
 
     IEnumerator SpawnMoedas()
     {
-        int moedasaleatorias = Random.Range(0, 1);
+        int moedasaleatorias = Random.Range(0, 2);
         for (int conta =0 ;  conta <= moedasaleatorias; conta++)
         {
             yield return new WaitForSeconds(MoedasTempo);
